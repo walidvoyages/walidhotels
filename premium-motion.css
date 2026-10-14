@@ -1,0 +1,67 @@
+/* Walid Voyages — couche design + animations (additive, ne remplace aucun fichier existant) */
+:root{--wv-mint:#bbd98d;--wv-teal:#137e9e;--wv-navy:#071b2b;--wv-ease:cubic-bezier(.2,.8,.2,1);--wv-r:26px}
+html{scroll-behavior:smooth}
+/* Barre de progression */
+.wv-progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:200;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--wv-mint),var(--wv-teal));pointer-events:none}
+[dir=rtl] .wv-progress{transform-origin:100% 50%}
+/* En-tête verre dépoli, sticky, compact au scroll */
+.sitehead{position:sticky!important;top:0;background:rgba(6,23,58,.78)!important;-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);transition:box-shadow .4s,background .4s}
+.sitehead .headinner{transition:height .4s var(--wv-ease)}
+.sitehead.is-stuck{box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.sitehead.is-stuck .headinner{height:72px}
+.nav a{position:relative}
+.nav a:after{content:"";position:absolute;inset:auto 0 -6px 0;height:2px;background:var(--wv-mint);transform:scaleX(0);transition:transform .35s var(--wv-ease)}
+.nav a:hover:after{transform:scaleX(1)}
+/* Hero : zoom lent, titres qui montent, avion décoratif */
+.hero-photo-v12{position:relative;overflow:hidden}
+.js-motion .hero-photo-v12 .poster-frame img{animation:wv-kb 22s ease-in-out infinite alternate;transform:translate3d(0,var(--py,0px),0) scale(1.06)}
+.js-motion .hero-scene.active{animation:wv-kb 18s ease-in-out infinite alternate}
+@keyframes wv-kb{to{transform:translate3d(0,var(--py,0px),0) scale(1.16)}}
+.js-motion .poster-description .poster-kicker,.js-motion .poster-description h2,.js-motion .poster-description p,.js-motion .showcase-actions,.js-motion #heroTitle span,.js-motion .hero-copy,.js-motion .hero-buttons{animation:wv-rise 1s var(--wv-ease) both}
+.js-motion .poster-description h2{animation-delay:.15s}.js-motion .poster-description p{animation-delay:.3s}.js-motion .showcase-actions{animation-delay:.45s}
+.js-motion #heroTitle span:nth-child(2){animation-delay:.18s}.js-motion .hero-copy{animation-delay:.35s}.js-motion .hero-buttons{animation-delay:.5s}
+@keyframes wv-rise{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:none}}
+.wv-plane{position:absolute;top:14%;inset-inline-start:0;width:64px;color:#fff;opacity:.9;z-index:5;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));animation:wv-fly 16s linear infinite}
+.wv-plane svg{width:100%;display:block}
+[dir=rtl] .wv-plane svg{transform:scaleX(-1)}
+.wv-plane:after{content:"";position:absolute;top:50%;inset-inline-end:90%;width:180px;height:2px;background:linear-gradient(270deg,rgba(255,255,255,.7),transparent);transform:translateY(-50%)}
+[dir=rtl] .wv-plane:after{background:linear-gradient(90deg,rgba(255,255,255,.7),transparent)}
+@keyframes wv-fly{0%{transform:translate(-20vw,30px) rotate(-6deg)}100%{transform:translate(120vw,-60px) rotate(-6deg)}}
+[dir=rtl] .wv-plane{animation-name:wv-fly-rtl}
+@keyframes wv-fly-rtl{0%{transform:translate(20vw,30px) rotate(6deg)}100%{transform:translate(-120vw,-60px) rotate(6deg)}}
+/* Barre de réservation flottante (esprit Roamly) + puces catégories (esprit Tripypedia) */
+.booking{background:transparent!important;padding:0!important;margin-top:-54px!important;position:relative;z-index:30}
+.booking-inner{background:#fffdf8;border-radius:34px;padding:26px 34px;box-shadow:0 30px 80px rgba(7,27,43,.28);flex-wrap:wrap}
+.booking-action{border-radius:999px!important;position:relative;overflow:hidden;transition:transform .35s var(--wv-ease),box-shadow .35s}
+.booking-action:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(19,126,158,.35)}
+.booking-action:before,.showcase-primary:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s}
+.booking-action:hover:before,.showcase-primary:hover:before{transform:translateX(120%)}
+.showcase-primary{position:relative;overflow:hidden}
+.wv-chips{flex-basis:100%;display:flex;flex-wrap:wrap;gap:10px;padding-top:6px;border-top:1px dashed #d9e3e0}
+.wv-chips a{padding:9px 16px;border-radius:999px;background:#eef6f4;color:#0b2a3b;font-size:13px;font-weight:600;text-decoration:none;transition:transform .3s var(--wv-ease),background .3s,color .3s}
+.wv-chips a:hover{background:var(--wv-teal);color:#fff;transform:translateY(-3px) rotate(-1deg)}
+/* Cartes : arrondis, survol, inclinaison 3D */
+.destination,.offer-card,.agency,.story-chips>div,.seo-links a{border-radius:var(--wv-r)!important}
+.destination,.offer-card,.agency{transition:transform .5s var(--wv-ease),box-shadow .5s;transform-style:preserve-3d;will-change:transform}
+.destination img,.offer-card img{transition:transform 1.2s var(--wv-ease)}
+.destination:hover img,.offer-card:hover img{transform:scale(1.1)}
+.destination:hover,.offer-card:hover,.agency:hover{box-shadow:0 34px 70px rgba(0,0,0,.32)}
+.destination .arrow{transition:transform .5s var(--wv-ease),background .3s}
+.destination:hover .arrow{transform:rotate(45deg) scale(1.12)}
+.agency:hover{transform:translateY(-8px)}
+/* Apparition au scroll (progressive : visible si JS indisponible) */
+.js-motion .reveal:not(.show){opacity:0;transform:translateY(40px) scale(.98)}
+.js-motion .reveal{transition:opacity .9s var(--wv-ease) var(--d,0s),transform .9s var(--wv-ease) var(--d,0s)}
+.js-motion .eyebrow i{animation:wv-grow 1.2s var(--wv-ease) both}
+@keyframes wv-grow{from{width:0}}
+/* Boutons magnétiques, WhatsApp pulsant, fin de page vivante */
+.pillbtn,.reserve,.showcase-primary,.showcase-secondary{transition:transform .25s ease-out,box-shadow .3s}
+.floatcontact a{position:relative;animation:wv-bob 3.2s ease-in-out infinite}
+.floatcontact a:before{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid #25d366;animation:wv-ping 2.4s ease-out infinite}
+@keyframes wv-ping{to{transform:scale(1.7);opacity:0}}
+@keyframes wv-bob{50%{transform:translateY(-6px)}}
+.endcap{position:relative;overflow:hidden}
+.endcap:before{content:"";position:absolute;width:60vmax;height:60vmax;inset-block-start:-30vmax;inset-inline-start:50%;margin-inline-start:-30vmax;background:radial-gradient(circle,rgba(19,126,158,.55),transparent 60%);animation:wv-orb 14s ease-in-out infinite alternate;pointer-events:none}
+@keyframes wv-orb{to{transform:translate(12vw,6vmax) scale(1.2)}}
+@media(max-width:650px){.booking{margin-top:-30px!important}.booking-inner{padding:20px;border-radius:26px}.wv-plane{width:44px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}.wv-plane{display:none}.reveal{opacity:1!important;transform:none!important}}

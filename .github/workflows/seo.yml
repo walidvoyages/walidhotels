@@ -1,0 +1,28 @@
+name: Publish SEO bilingue FR AR
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check google-auth requests
+      - name: Generate bilingual SEO pages securely
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+        run: python generate-seo.py
+      - name: Commit published HTML and sitemap
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -- '*.html' sitemap.xml robots.txt articles/
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish bilingual SEO from admin"
+            git push
+          fi

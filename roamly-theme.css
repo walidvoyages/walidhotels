@@ -1,0 +1,65 @@
+/* Walid Voyages — thème « Roamly » : crème, vert profond, terracotta, cadres arrondis */
+:root{--cream:#f4efe6;--forest:#0f3d35;--forest2:#0a2b25;--terra:#c8664a;--ink:#0f2f2a;--line:#e6dfd0}
+html{scrollbar-width:thin;scrollbar-color:var(--forest) var(--cream)}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--cream)}::-webkit-scrollbar-thumb{background:var(--forest);border-radius:10px;border:2px solid var(--cream)}
+body{background:var(--cream)!important;color:var(--ink)}
+/* Icônes SVG propres */
+.wv-i{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.18em;margin-inline:.15em}
+.wv-i svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.floatcontact a{display:grid!important;place-items:center;width:58px;height:58px;border-radius:50%!important;background:var(--forest)!important;color:#fff!important;box-shadow:0 14px 34px rgba(15,61,53,.45)}
+.floatcontact .wv-i{width:26px;height:26px;margin:0}
+.hamb .wv-i{width:26px;height:26px}
+/* Numéros toujours lisibles (corrige l'inversion en arabe) */
+.header-phone,.agency p,a[href^="tel:"]{direction:ltr;unicode-bidi:isolate}
+[dir=rtl] .agency p{text-align:right}
+/* En-tête pilule flottante */
+.sitehead{width:min(calc(100% - 28px),1320px);margin:12px auto 0;top:10px!important;border-radius:999px;border:1px solid rgba(255,255,255,.2)!important;background:rgba(15,61,53,.82)!important}
+.sitehead.is-stuck .headinner{height:68px}
+.reserve,.header-phone{border-radius:999px!important}
+.reserve{background:var(--terra)!important;color:#fff!important;border:0!important}
+/* Hero encadré */
+.hero-photo-v12,.legacy-hero{margin:12px 14px 0;border-radius:36px}
+.poster-description h2,.hero h1{letter-spacing:-.02em;line-height:1.02}
+.showcase-primary,.pillbtn.light{background:var(--terra)!important;color:#fff!important;border:0!important;border-radius:999px!important}
+.showcase-secondary,.pillbtn:not(.light):not(.dark){border-radius:999px!important}
+.pillbtn.dark{background:var(--forest)!important;color:#fff!important;border-radius:999px!important}
+/* Carte de réservation */
+.booking{margin-top:-46px!important}
+.booking-inner{background:#fff;border:1px solid var(--line)}
+.booking-action{background:var(--forest)!important;color:#fff!important}
+.booking-action:nth-child(2){background:var(--terra)!important}
+.booking-title h2{color:var(--ink)}
+.wv-chips a{background:var(--cream)}
+.wv-chips a:hover{background:var(--forest)}
+/* Sections claires */
+.destinations,.story,.offers,.agencies{background:var(--cream)!important;color:var(--ink)!important}
+.destinations h2,.story h2,.offers h2,.agencies h2,.story-big,.sectionhead h2{color:var(--forest)!important}
+.destinations em,.story em,.offers em,.agencies em,.sectionhead em,.omra em{color:var(--terra)!important;font-style:normal}
+.sectionhead p,.story-copy,.offers p.empty,.empty-message{color:#4d625d!important}
+.eyebrow{color:var(--terra)!important}
+.eyebrow i{background:var(--terra)!important}
+.story-chips>div{background:#fff!important;border:1px solid var(--line);color:var(--ink)!important}
+.story-chips strong{color:var(--terra)!important}
+/* Cartes destinations façon « Top Places » */
+.destination{border-radius:28px!important;box-shadow:0 18px 44px rgba(15,61,53,.18)}
+.destination:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(7,30,26,.78));pointer-events:none}
+.destination>*:not(img){z-index:2}
+.destination .arrow{width:46px;height:46px;border-radius:50%!important;background:rgba(244,239,230,.92)!important;color:var(--forest)!important;display:grid;place-items:center;font-size:0}
+.destination .arrow .wv-i{width:20px;height:20px;margin:0}
+/* Cartes agences et offres */
+.agency,.offer-card{background:#fff!important;border:1px solid var(--line)!important;color:var(--ink)!important;box-shadow:0 12px 34px rgba(15,61,53,.08)}
+.agency small{color:var(--terra)!important}
+.agency h3,.offer-card h3{color:var(--forest)!important}
+.agency p,.offer-card p{color:#4d625d!important}
+.agency a,.offer-card a{display:inline-flex;align-items:center;gap:4px;margin:6px 6px 0 0;padding:8px 14px;border-radius:999px;background:var(--cream);color:var(--forest)!important;font-weight:700;text-decoration:none;transition:background .3s,color .3s}
+[dir=rtl] .agency a,[dir=rtl] .offer-card a{margin:6px 0 0 6px}
+.agency a:hover,.offer-card a:hover{background:var(--forest);color:#fff!important}
+.agencies-promo{background:var(--forest)!important;border-radius:28px!important;color:#fff}
+/* Sections sombres vert profond */
+.seo,.endcap{background:var(--forest)!important;color:#fff}
+.seo h2,.seo p,.endcap h2,.endcap p{color:#fff!important}
+.seo .eyebrow,.endcap .eyebrow{color:#bbd98d!important}.endcap em{color:#bbd98d!important;font-style:normal}
+.seo-links a{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.16)!important;color:#fff!important}
+.seo-links a:hover{background:var(--terra)!important}
+.footer{background:var(--forest2)!important}
+@media(max-width:950px){.sitehead{border-radius:28px}}
