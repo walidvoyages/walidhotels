@@ -1,0 +1,12 @@
+INTEGRATION CARTES ELECTRONIQUES - WALID VOYAGES
+
+1) Copier index.html dans la racine du dépôt GitHub Walid (remplacer index.html actuel).
+2) Copier tout le dossier agences/ dans cette même racine.
+3) Conserver TOUS les autres fichiers existants (CSS, JS, images, pages FR/AR, admin). Ne pas remplacer tout le dépôt par ce ZIP : il ne contient que les fichiers concernés.
+4) Commit puis Push origin dans GitHub Desktop.
+5) Après publication sur le domaine racine, annuaire : https://www.walidvoyages.com/agences/
+
+IMPORTANT : les cartes individuelles (Sousse, Mahdia, Tunis, etc.) sont hébergées dans d'autres dépôts GitHub Pages, et leurs fichiers ne figurent PAS dans votre archive fournie. Les boutons de l'annuaire continuent de renvoyer à ces pages externes. Pour avoir AUSSI walidvoyages.com/agences/sousse/ etc., il faudra fournir leurs codes source pour les intégrer physiquement au même dépôt.
+
+Les liens de réservations vers www.walid-voyages.com restent inchangés.
+Si Hostinger ou GitHub Pages déploie depuis un répertoire différent, y placer les fichiers dans le dossier réellement publié.

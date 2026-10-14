@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#04395f" name="theme-color"/><title>Walid Voyages — Nos Agences</title>
+<meta content="Toutes les agences Walid Voyages — cartes électroniques, contacts et réservation en ligne." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Tajawal:wght@500;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#078fd0;--deep:#04395f;--navy:#021d33;--green:#9bb629;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Manrope,Tajawal,sans-serif;color:#17364d;background:linear-gradient(150deg,#eaf8ff,#fff 50%,#f5fae9);min-height:100vh;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden}.orb{position:absolute;border-radius:50%;filter:blur(2px);opacity:.22;animation:drift 9s ease-in-out infinite}.o1{width:330px;height:330px;background:#00aee8;right:-130px;top:50px}.o2{width:270px;height:270px;background:#a4bd2d;left:-130px;top:55%;animation-delay:-4s}@keyframes drift{50%{transform:translateY(-35px) scale(1.08)}}
+.wrap{width:min(100%,820px);margin:auto;padding:16px 14px 118px}
+.hero{position:relative;overflow:hidden;border-radius:38px;background:linear-gradient(135deg,#032d4d,#00689e 58%,#08a8d8);box-shadow:0 30px 75px #034b763b;color:#fff;padding:24px 24px 31px;isolation:isolate}
+.hero:before{content:"";position:absolute;width:390px;height:390px;border-radius:50%;border:1px solid #ffffff24;right:-180px;top:-220px;box-shadow:0 0 0 38px #ffffff07,0 0 0 78px #ffffff06;z-index:-1}
+.logoBox{width:min(100%,540px);height:135px;background:#fff;border-radius:27px;padding:8px 15px;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px #00233d42;animation:logoIn .8s cubic-bezier(.2,.8,.2,1) both}
+.logoBox img{width:100%;height:100%;object-fit:contain}@keyframes logoIn{from{opacity:0;transform:translateY(-18px) scale(.97)}}
+.badge{display:inline-flex;margin-top:22px;padding:8px 12px;border:1px solid #ffffff3b;background:#ffffff12;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:1.5px}
+h1{font-size:42px;line-height:1.02;letter-spacing:-2px;margin:15px 0 8px}.green{color:#c8dc4d}.lead{font-size:12px;line-height:1.7;color:#d9f3ff;max-width:560px;margin:0}
+.heroBtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:19px}.heroBtns a{text-decoration:none;background:#fff;color:#064a72;padding:11px 14px;border-radius:14px;font-size:10px;font-weight:800;transition:.2s}.heroBtns a:hover{transform:translateY(-3px)}
+.ticker{margin:12px 0 0;border-radius:18px;overflow:hidden;background:#062f50;color:#fff;box-shadow:0 13px 30px #043f6222;display:flex;align-items:center;height:48px}.tickerTitle{height:100%;display:flex;align-items:center;padding:0 15px;background:var(--green);font-size:10px;font-weight:900;white-space:nowrap;z-index:2}.track{overflow:hidden;white-space:nowrap;flex:1}.track span{display:inline-block;padding-left:100%;animation:ticker 20s linear infinite;font-size:10px;font-weight:700}.track b{color:#d1e45d}@keyframes ticker{to{transform:translateX(-100%)}}
+.title{display:flex;align-items:end;justify-content:space-between;margin:27px 4px 12px}.title h2{margin:0;color:var(--deep);font-size:21px}.title small{font-size:9px;color:#7890a0;font-weight:800;letter-spacing:1px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.branch{position:relative;min-height:174px;padding:19px;border-radius:27px;text-decoration:none;color:var(--deep);background:#ffffffdf;border:1px solid #fff;box-shadow:0 15px 38px #075c8515;overflow:hidden;transition:.3s;animation:rise .6s both}.branch:nth-child(2){animation-delay:.07s}.branch:nth-child(3){animation-delay:.14s}.branch:nth-child(4){animation-delay:.21s}.branch:nth-child(5){animation-delay:.28s}.branch:nth-child(6){animation-delay:.35s}@keyframes rise{from{opacity:0;transform:translateY(18px)}}.branch:hover{transform:translateY(-6px);box-shadow:0 24px 50px #075c8527}.branch:after{content:"↗";position:absolute;right:16px;top:16px;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:#eef9fd;color:#087ab4;font-size:17px}.pin{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,#0798d8,#05669f);display:grid;place-items:center;color:#fff;font-size:18px;box-shadow:0 10px 23px #078dcc30}.branch h3{font-size:18px;margin:15px 0 4px}.branch p{font-size:10px;color:#7890a1;margin:0}.go{display:inline-block;margin-top:15px;padding:7px 10px;border-radius:999px;background:#f1f7d8;color:#718b10;font-size:9px;font-weight:800}
+.sousse{grid-column:1/-1;min-height:205px;background:linear-gradient(135deg,#04385f,#0578ad 62%,#0aa9d7);color:#fff}.sousse:before{content:"AGENCE PRINCIPALE";position:absolute;right:-34px;bottom:22px;transform:rotate(-90deg);font-size:8px;letter-spacing:2px;color:#ffffff55;font-weight:900}.sousse:after{background:#ffffff18;color:#fff}.sousse p{color:#c5e4f1}.sousse .pin{background:linear-gradient(145deg,#b5cc39,#799412)}.sousse .go{background:#a4bd2d;color:#fff}.sousse h3{font-size:24px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.infoBox{border-radius:23px;padding:18px;background:#fff;border:1px solid #fff;box-shadow:0 14px 35px #075c8512}.infoBox b{display:block;color:var(--deep);font-size:13px}.infoBox span{font-size:10px;color:#7890a1;line-height:1.7}
+.pay{margin-top:11px;border-radius:28px;padding:22px;background:linear-gradient(125deg,#9fb72b,#728b0f);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:15px;box-shadow:0 18px 42px #77921627}.pay h3{font-size:17px;margin:0 0 4px}.pay p{font-size:10px;margin:0}.pay a{text-decoration:none;background:#fff;color:#064467;padding:12px 15px;border-radius:14px;font-size:10px;font-weight:900;white-space:nowrap}
+.footer{text-align:center;padding:24px;color:#71899a;font-size:9px}.dock{position:fixed;z-index:10;bottom:12px;left:50%;transform:translateX(-50%);width:min(calc(100% - 28px),540px);display:grid;grid-template-columns:repeat(4,1fr);padding:8px;background:#073d68ef;border:1px solid #ffffff30;border-radius:23px;box-shadow:0 18px 45px #00334f55;backdrop-filter:blur(18px)}.dock a{text-decoration:none;color:#fff;text-align:center;font-size:9px;font-weight:700;padding:6px}.dock strong{display:block;font-size:18px;margin-bottom:2px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.sousse{grid-column:auto}.logoBox{height:105px}.hero{padding:18px 18px 26px}h1{font-size:35px}.info{grid-template-columns:1fr}.pay{align-items:flex-start;flex-direction:column}}
+</style><link href="https://www.walidvoyages.com/agences/" rel="canonical"/><style>.return-site{position:relative;display:inline-flex;align-items:center;margin:12px 0 14px;padding:11px 16px;border-radius:999px;color:#064b75;background:#ffffffed;border:1px solid #c9e6f4;text-decoration:none;font-weight:800;box-shadow:0 6px 25px #034b7615;transition:transform .25s ease,box-shadow .25s ease}.return-site:hover{transform:translateY(-3px);box-shadow:0 10px 28px #034b762b}</style></head>
+<body><div class="bg"><div class="orb o1"></div><div class="orb o2"></div></div>
+<main class="wrap" id="top"><a class="return-site" href="../index.html">← Retour au site Walid Voyages</a>
+<section class="hero">
+<div class="logoBox"><img alt="Walid Voyages" src="walid-logo-original.jpg"/></div>
+<div class="badge">✦ WALID VOYAGES • TUNISIE</div>
+<h1>Nos agences.<br/><span class="green">Plus proches de vous.</span></h1>
+<p class="lead">Toutes les cartes électroniques Walid Voyages dans une seule page. Choisissez votre agence pour accéder à ses coordonnées, Maps et services.</p>
+<div class="heroBtns"><a href="https://walid-voyages.com/" target="_blank">🌐 Réserver sur le site</a><a href="tel:+21673201660">☎ Agence Sousse</a></div>
+</section>
+<div class="ticker"><div class="tickerTitle">WALID INFO</div><div class="track"><span>📍 Sousse   •   ☎ <b>73 201 660</b>   •   📱 <b>58 150 699</b>   •   ✈ Vols   •   🏨 Hôtels   •   🕋 Omra   •   💳 Paiement en ligne sécurisé   •   🌐 walid-voyages.com    </span></div></div>
+<div class="title"><h2>Choisissez votre agence</h2><small>7 AGENCES</small></div>
+<section class="grid" id="agences">
+<a class="branch sousse" href="https://walidvoyages.github.io/sousse/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Sousse</h3><p>Sousse • Agence Walid Voyages</p><span class="go">Ouvrir la carte électronique</span></a>
+<a class="branch" href="https://walidvoyages.github.io/Soliman-/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Soliman</h3><p>Soliman • Nabeul • ☎ 52 636 015</p><span class="go">Carte électronique</span></a>
+<a class="branch" href="https://walidvoyages.github.io/tunis/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Tunis</h3><p>Tunis • Lafayette</p><span class="go">Carte électronique</span></a>
+<a class="branch" href="https://walidvoyages.github.io/Sfax/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Sfax</h3><p>Sfax • Tunisie</p><span class="go">Carte électronique</span></a>
+<a class="branch" href="https://walidvoyages.github.io/Mahdia/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Mahdia</h3><p>Mahdia • Tunisie</p><span class="go">Carte électronique</span></a>
+<a class="branch" href="https://walidvoyages.github.io/Moknine/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Moknine</h3><p>Av. Habib Bourguiba • Moknine</p><span class="go">Carte électronique</span></a>
+<a class="branch" href="https://walidvoyages.github.io/swassi-/" target="_blank">
+<div class="pin">⌖</div>
+<h3>Walid Voyages Swassi</h3>
+<p>Rue de la Liberté • Swassi, Mahdia</p>
+<p>☎ 73 610 647 / 97 810 474</p>
+<a class="branch" href="https://walidvoyages.github.io/kasserine/" target="_blank"><div class="pin">⌖</div><h3>Walid Voyages Kasserine</h3><p>Kasserine • Tunisie</p><span class="go">Carte électronique</span></a>
+</a></section>
+<section class="info"><div class="infoBox"><b>✈ Voyage sans complication</b><span>Billets d'avion, hôtels, Omra et voyages organisés.</span></div><div class="infoBox"><b>💳 Réservation en ligne</b><span>Réservez directement sur notre site avec paiement en ligne sécurisé.</span></div></section>
+<section class="pay"><div><h3>Votre voyage commence ici.</h3><p>Réservez en ligne sur Walid Voyages.</p></div><a href="https://walid-voyages.com/" target="_blank">RÉSERVER ↗</a></section>
+<div class="footer">Walid Voyages • Agence de voyages &amp; tourisme<br/>www.walid-voyages.com</div>
+</main>
+<nav class="dock"><a href="../index.html" title="Accueil Walid Voyages"><strong>⌂</strong>Accueil</a><a href="#agences"><strong>⌖</strong>Agences</a><a href="https://walid-voyages.com/" target="_blank"><strong>🌐</strong>Site</a><a href="tel:+21673201660"><strong>☎</strong>Sousse</a></nav>
+</body></html>
