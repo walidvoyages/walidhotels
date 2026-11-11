@@ -46,7 +46,7 @@ var txt=(ar?"السلام عليكم، نحب نستفسر على حجز نزل 
 (ar?"تاريخ الخروج: ":"Départ : ")+(to&&to.value?to.value:"à préciser")+"\n"+
 (ar?"عدد المسافرين: ":"Voyageurs : ")+(guests?guests.value:"2");
 return WA+"?text="+encodeURIComponent(txt);}
-function allHotels(){var combined=rotate(hotels.slice());adminHotels.forEach(function(h){var k=key(h.n),idx=combined.findIndex(function(p){return key(p.n)===k;});if(idx>=0)combined[idx]=Object.assign({},combined[idx],h);else combined.push(h);});return combined;}
+function allHotels(){var combined=rotate(hotels.slice());adminHotels.forEach(function(h){var k=key(h.n),idx=combined.findIndex(function(p){return key(p.n)===k;});if(idx>=0)combined[idx]=Object.assign({},combined[idx],h);else combined.push(h);});return combined.sort(function(a,b){return Number(b.v)-Number(a.v);});}
 function reviewHtml(h){var list=reviews[key(h.n)]||[];var title=ar?"آراء المسافرين":"Avis voyageurs";var content=list.length?list.slice(0,8).map(function(r){
 var count=Math.max(0,Math.min(5,Number(r.score)||0));return '<div class="review-quote">'+(count?'<span class="stars" aria-label="'+count+'/5">'+("★".repeat(count))+'</span>':'')+
 '<blockquote>“'+esc(r.comment)+'”</blockquote><small>'+esc(r.author)+(r.stayDate?" · "+esc(r.stayDate):"")+'</small></div>';
