@@ -38,21 +38,23 @@ function safeUrl(url){try{var u=new URL(url,location.href);return u.protocol==="
 function cover(u,idx){return safeUrl(u)||img(idx);}
 function isPublished(v){return !!v && (v.published===true||v.published==="true");}
 function official(){return BOOK;}
+function bookingLink(h){let u=new URL(BOOK);let ci=document.getElementById("arrival")?.value,co=document.getElementById("departure")?.value; if(ci)u.searchParams.set("checkin",ci);if(co)u.searchParams.set("checkout",co);u.searchParams.set("hotel",h.n);u.searchParams.set("q",h.n);u.searchParams.set("destination",h.c);return u.href;}
+function rotate(items){if(items.length<2)return items;let day=Math.floor(Date.now()/86400000);let offset=day%items.length;return items.slice(offset).concat(items.slice(0,offset));}
 function enquiry(name){var from=document.getElementById("arrival"),to=document.getElementById("departure"),guests=document.getElementById("guests");
 var txt=(ar?"السلام عليكم، نحب نستفسر على حجز نزل ":"Bonjour, je souhaite une offre pour l’hôtel ")+name+".\n"+
 (ar?"تاريخ الدخول: ":"Arrivée : ")+(from&&from.value?from.value:"à préciser")+"\n"+
 (ar?"تاريخ الخروج: ":"Départ : ")+(to&&to.value?to.value:"à préciser")+"\n"+
 (ar?"عدد المسافرين: ":"Voyageurs : ")+(guests?guests.value:"2");
 return WA+"?text="+encodeURIComponent(txt);}
-function allHotels(){var combined=hotels.slice();adminHotels.forEach(function(h){var k=key(h.n),idx=combined.findIndex(function(p){return key(p.n)===k;});if(idx>=0)combined[idx]=Object.assign({},combined[idx],h);else combined.push(h);});return combined;}
+function allHotels(){var combined=rotate(hotels.slice());adminHotels.forEach(function(h){var k=key(h.n),idx=combined.findIndex(function(p){return key(p.n)===k;});if(idx>=0)combined[idx]=Object.assign({},combined[idx],h);else combined.push(h);});return combined;}
 function reviewHtml(h){var list=reviews[key(h.n)]||[];var title=ar?"آراء المسافرين":"Avis voyageurs";var content=list.length?list.slice(0,8).map(function(r){
 var count=Math.max(0,Math.min(5,Number(r.score)||0));return '<div class="review-quote">'+(count?'<span class="stars" aria-label="'+count+'/5">'+("★".repeat(count))+'</span>':'')+
 '<blockquote>“'+esc(r.comment)+'”</blockquote><small>'+esc(r.author)+(r.stayDate?" · "+esc(r.stayDate):"")+'</small></div>';
 }).join(""):'<div class="review-empty">'+(ar?"مازال ما فماش تقييمات منشورة للنزل هذا. التقييمات تظهر بعد التثبت والموافقة عليها.":"Aucun avis voyageur vérifié et publié pour le moment. Les avis apparaissent après modération.")+'</div>';
-return '<details class="hotel-review"><summary>'+title+' ('+list.length+')</summary><div class="review-list">'+content+'<a class="review-contact" target="_blank" rel="noopener noreferrer" href="'+enquiry(h.n)+'">'+(ar?"ابعثلنا رأيك أو استفسارك ←":"Partager votre expérience ou demander conseil →")+'</a></div></details>';}
+return '<details class="hotel-review"><summary>'+title+' ('+list.length+')</summary><div class="review-list">'+content+'<button class="write-review" type="button" data-review-hotel="'+esc(h.n)+'">'+(ar?"اكتب تقييمك للنزل ★":"Donner mon avis sur cet hôtel ★")+'</button></div></details>';}
 function hotelHtml(h,i){
 var st=Number(h.s);var valid=Number.isInteger(st)&&st>=1&&st<=5;var rating=valid?'<span class="stars" aria-label="'+st+(ar?" نجوم":" étoiles")+'">'+("★".repeat(st))+'</span><span class="stars-label">'+st+(ar?" نجوم":" étoiles")+'</span>':'<span class="stars-label">'+(ar?"التصنيف عند الطلب":"Classement sur demande")+'</span>';
-var c=esc(h.c);var n=esc(h.n);var link=safeUrl(h.u)||official();
+var c=esc(h.c);var n=esc(h.n);var link=bookingLink(h);
 return '<article class="hotel-card"><div class="hotel-media"><img src="'+esc(cover(h.p,i))+'" loading="lazy" alt="'+(ar?"صورة توضيحية لوجهة ":"Photo d’ambiance, destination ")+c+'" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80\'"><span class="hotel-pill">'+(h.v?(ar?"موجود على موقع وليد للأسفار":"Référencé chez Walid Voyages"):(ar?"اقتراح اكتشاف":"À découvrir"))+'</span><small class="hotel-illustration">'+(ar?"صورة توضيحية":"Photo d’ambiance")+'</small></div><div class="hotel-body"><div class="hotel-location">⌖ '+c+', '+(ar?"تونس":"Tunisie")+'</div><h3>'+n+'</h3><div>'+rating+'</div><p class="hotel-desc">'+esc(ar?h.a:h.f)+'</p><div class="hotel-divider"></div><div class="hotel-bottom"><div><small>'+(ar?"الأسعار حسب التاريخ والتوفّر":"Tarifs selon dates et disponibilité")+'</small><strong>'+(ar?"التثبت في السعر":"Prix à consulter")+'</strong></div><a href="'+esc(link)+'" rel="noopener noreferrer" target="_blank">'+(ar?"شوف الحجز ↗":"Voir les offres ↗")+'</a></div>'+reviewHtml(h)+'</div></article>';
 }
 function render(){
@@ -68,6 +70,8 @@ var count=document.getElementById("hotelCount");if(count)count.textContent=resul
 document.querySelectorAll("[data-city]").forEach(function(b){b.addEventListener("click",function(){selected=b.getAttribute("data-city");expanded=false;document.querySelectorAll("[data-city]").forEach(function(el){el.classList.toggle("active",el===b);});var sel=document.getElementById("city");if(sel)sel.value="all";render();});});
 document.getElementById("searchForm")?.addEventListener("submit",function(e){e.preventDefault();selected="all";expanded=true;document.querySelectorAll("[data-city]").forEach(function(b){b.classList.toggle("active",b.getAttribute("data-city")==="all");});render();document.getElementById("hotels")?.scrollIntoView({behavior:"smooth"});});
 more?.addEventListener("click",function(){expanded=!expanded;render();});
+document.getElementById("hotelQuery")?.addEventListener("input",function(){expanded=true;render();});
+setInterval(function(){render();},3600000);
 var nav=document.getElementById("nav"),menu=document.getElementById("menuButton");
 menu?.addEventListener("click",function(){var open=nav.classList.toggle("open");menu.setAttribute("aria-expanded",String(open));});
 nav?.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){nav.classList.remove("open");menu?.setAttribute("aria-expanded","false");});});
