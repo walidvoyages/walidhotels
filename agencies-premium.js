@@ -3,7 +3,7 @@
 const ar=document.documentElement.lang==="ar";
 const safe=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const grid=document.getElementById("agencyGrid");if(!grid)return;
-const approved=(url,kind)=>{try{let x=new URL(url,location.href);if(x.protocol!=="https:"&&x.origin!==location.origin)return "";if(kind==="photo")return x.origin===location.origin||["res.cloudinary.com","images.unsplash.com"].includes(x.hostname)?x.href:"";if(kind==="map")return ["www.google.com","maps.google.com","google.com","share.google"].includes(x.hostname)?x.href:"";return x.href;}catch{return ""}};
+const approved=(url,kind)=>{try{let x=new URL(url,location.href);if(x.protocol!=="https:"&&x.origin!==location.origin)return "";if(kind==="photo")return x.origin===location.origin||["res.cloudinary.com","images.unsplash.com","raw.githubusercontent.com"].includes(x.hostname)?x.href:"";if(kind==="map")return ["www.google.com","maps.google.com","google.com","share.google"].includes(x.hostname)?x.href:"";return x.href;}catch{return ""}};
 const key=n=>String(n||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
 const defaults=[...grid.querySelectorAll(".agency-card")].map(el=>({name:key(el.dataset.agencyCity),html:el.outerHTML}));
 function agencyTemplate(o){
