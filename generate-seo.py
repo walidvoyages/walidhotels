@@ -63,6 +63,33 @@ for key,record in articles.items():
  url=BASE+'/articles/'+slug+'.html'
  doc=f'''<!doctype html><html lang="{lang}" dir="{direction}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title} | Walid Voyages</title><meta name="description" content="{desc}"><link rel="canonical" href="{escaped(url)}"><style>body{{font:18px/1.8 system-ui,sans-serif;color:#14344c;background:#f6fbfe;margin:0}}header,main,footer{{max-width:860px;margin:auto;padding:26px}}h1{{font-size:clamp(30px,5vw,54px)}}main{{background:white;border-radius:22px}}</style></head><body><header><a href="{escaped(BASE+'/index.html')}">Walid Voyages</a></header><main><h1>{title}</h1><p>{desc}</p>{body}</main><footer>Walid Voyages</footer></body></html>'''
  (out/(slug+'.html')).write_text(doc,encoding='utf-8');urls.append(url)
+
+# Hotel pages are created only for real, admin-published records.
+# Google can crawl the HTML even when the live Firebase catalogue is unavailable.
+hotels_data=get('hotels') or {}
+if not isinstance(hotels_data,dict):raise RuntimeError('Firebase hotels format incorrect')
+hotels_dir=ROOT/'hotels';hotels_dir.mkdir(exist_ok=True)
+published_hotels=[]
+for record in hotels_data.values():
+ if not isinstance(record,dict) or record.get('published') is not True or not record.get('title'):continue
+ published_hotels.append(record)
+for record in published_hotels:
+ title=str(record['title'])[:110]
+ city=str(record.get('city') or 'Tunisie')[:75]
+ slug=re.sub(r'[^a-z0-9]+','-',__import__('unicodedata').normalize('NFKD',title).encode('ascii','ignore').decode().lower()).strip('-')[:72]
+ if not slug:continue
+ filename=slug+'.html'
+ url=BASE+'/hotels/'+filename
+ description=(str(record.get('description') or 'Découvrez cet hôtel et demandez une offre de séjour avec Walid Voyages.')[:280])
+ page_title=escaped(title+' à '+city+' | Séjour en Tunisie - Walid Hotels')
+ image=str(record.get('image') or '')
+ if not image.startswith('https://'):image=''
+ ld={"@context":"https://schema.org","@type":"Hotel","name":title,"address":{"@type":"PostalAddress","addressLocality":city,"addressCountry":"TN"},"description":description}
+ if image:ld['image']=image
+ doc='''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>'''+page_title+'''</title><meta name="description" content="'''+escaped(description[:155])+'''"><link rel="canonical" href="'''+escaped(url)+'''"><style>body{margin:0;font:17px/1.8 system-ui,sans-serif;background:#f3f9fb;color:#183c52}header,main,footer{max-width:920px;margin:auto;padding:25px}a{color:#198aba}h1{font-size:clamp(30px,5vw,53px);line-height:1.2}main{background:#fff;border-radius:20px;box-shadow:0 14px 44px #1232}img{border-radius:18px;max-height:380px;width:100%;object-fit:cover}.cta{display:inline-block;padding:12px 20px;border-radius:30px;background:#49AAE3;color:white;font-weight:bold}</style><script type="application/ld+json">'''+json.dumps(ld,ensure_ascii=False).replace('</','<\\/')+'''</script></head><body><header><a href="'''+escaped(BASE+'/')+'''">Walid Hotels · Walid Voyages</a></header><main><h1>'''+escaped(title)+'''</h1><p>Hôtel à '''+escaped(city)+''', Tunisie</p>'''+('<img src="'+escaped(image)+'" loading="lazy" alt="'+escaped(title)+'">' if image else '')+'''<p>'''+escaped(description)+'''</p><p>Tarifs, caractéristiques et disponibilité à confirmer pour les dates du séjour.</p><a class="cta" href="'''+escaped(BASE+'/index.html#hotels')+'''">Découvrir les hôtels et demander une réservation</a></main><footer>Walid Voyages • '''+escaped(city)+'''</footer></body></html>'''
+ (hotels_dir/filename).write_text(doc,encoding='utf-8')
+ urls.append(url)
+
 xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('<url><loc>'+escaped(u)+'</loc></url>\n' for u in sorted(set(urls)))+'</urlset>\n'
 (ROOT/'sitemap.xml').write_text(xml,encoding='utf-8')
 (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\nDisallow: /admin.html\nSitemap: '+BASE+'/sitemap.xml\n',encoding='utf-8')
