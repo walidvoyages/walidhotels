@@ -15,7 +15,7 @@ var assets=[
 function img(i){return "https://images.unsplash.com/"+assets[i%assets.length]+"?auto=format&fit=crop&w=900&q=82";}
 var hotels=[
 {n:"Mövenpick Resort & Marine Spa Sousse",c:"Sousse",s:5,p:img(0),v:1,f:"Resort en bord de mer et séjour bien-être à Sousse.",a:"منتجع على البحر وإقامة للاسترخاء في سوسة."},
-{n:"TUI MAGIC LIFE Africana",c:"Hammamet",s:5,p:img(1),v:1,u:"https://www.walid-voyages.com/details/166",f:"Club hôtel de Yasmine Hammamet pour les vacances en famille.",a:"نزل بنظام نادي في ياسمين الحمامات للعطل العائلية."},
+{n:"TUI MAGIC LIFE Africana",c:"Hammamet",s:5,p:img(1),v:1,f:"Club hôtel de Yasmine Hammamet pour les vacances en famille.",a:"نزل بنظام نادي في ياسمين الحمامات للعطل العائلية."},
 {n:"Green Golf Hammamet",c:"Hammamet",s:null,p:img(2),v:1,f:"Séjour pratique à Yasmine Hammamet, près de la marina.",a:"إقامة في ياسمين الحمامات بالقرب من المارينا."},
 {n:"Résidence Romane",c:"Hammamet",s:null,p:img(3),v:1,f:"Une adresse à découvrir pour vos escapades à Hammamet.",a:"عنوان يستحق الاكتشاف لقضاء عطلتك في الحمامات."},
 {n:"Le Corail Appart'hôtel Yasmine Hammamet",c:"Hammamet",s:null,p:img(4),v:1,f:"Appart'hôtel à Yasmine Hammamet pour des séjours flexibles.",a:"شقق فندقية في ياسمين الحمامات لإقامة على راحتك."},
