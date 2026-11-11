@@ -11,7 +11,7 @@ $('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginSt
 onAuthStateChanged(auth,async user=>{authorized=false;if(user){try{let r=await get(ref(db,'admins/'+user.uid));authorized=r.val()==='admin'}catch(e){console.warn(e)} }$('login').classList.toggle('hidden',authorized);$('dashboard').classList.toggle('hidden',!authorized);if(authorized)showTab();else if(user){$('loginStatus').textContent='Compte sans autorisation Admin. Vérifiez admins/UID dans Firebase.';await signOut(auth)}});
 $('logout').addEventListener('click',()=>signOut(auth));document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;selected=null;showTab()}));$('clearForm').addEventListener('click',()=>{selected=null;showTab()});
 function fields(record={}){let arr=schemas[tab]||[];$('editorFields').innerHTML=(tab==='seo'?`<label>Page SEO à modifier</label><select id="seoPage" style="width:100%;padding:14px;border:1px solid #cbd5e1;border-radius:12px">${seoPages.map(p=>`<option value="${p}" ${p===seoPage?'selected':''}>${p} (${p.startsWith('ar')?'AR':'FR'})</option>`).join('')}</select>`:'')+arr.map(([key,label,type])=>`<label for="fld-${key}">${label}</label>${type==='textarea'?`<textarea id="fld-${key}" name="${key}">${safe(record[key]||'')}</textarea>`:`<input id="fld-${key}" name="${key}" type="${type||'text'}" value="${safe(record[key]||'')}">`}`).join('')+(tab!=='cover'&&tab!=='seo'&&tab!=='promo'?`<label><input name="published" type="checkbox" style="width:auto" ${record.published?'checked':''}> Publier (visible au public)</label>`:'')}
-async function showTab(){if(!authorized)return;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));$('panelTitle').textContent=({promo:'Affiche verticale',cover:'Couverture',seo:'SEO Manager',articles:'Articles',omra:'Programmes Omra',hotels:'Hôtels',hotelReviews:'Avis hôtels',voyages:'Voyages organisés',agencies:'Agences'})[tab];status('Chargement...');let path=tab==='cover'?'banners/home':tab==='promo'?'banners/promo':tab==='seo'?'seo/pages/'+seoKey(seoPage):tab;try{let snap=await get(ref(db,path)),data=snap.val();if(tab==='cover'||tab==='seo'||tab==='promo'){fields(data||{});if(tab==='seo')document.getElementById('seoPage')?.addEventListener('change',e=>{seoPage=e.target.value;showTab()});$('records').innerHTML=tab==='seo'?'<p>Étape 1 : Enregistrer dans Firebase. Étape 2 : Publier SEO pour reconstruire les HTML. Google ne garantit pas le classement.</p>':'<p>Enregistrez vos modifications puis actualisez le site public.</p>'}else{fields();let all=Object.entries(data||{});$('records').innerHTML='<h3>Contenus enregistrés</h3>'+(all.length?all.map(([id,v])=>`<p><strong>${safe(v.title||id)}</strong> · ${v.published?'Publié':'Non publié'} <button type="button" data-edit="${safe(id)}">Modifier</button> <button type="button" data-delete="${safe(id)}">Supprimer</button></p>`).join(''):'<p>Aucun contenu.</p>');$('records').querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.edit;fields(data[selected]);window.scrollTo({top:0,behavior:'smooth'})}));$('records').querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',async()=>{if(!confirm('Supprimer définitivement ?'))return;await remove(ref(db,tab+'/'+btn.dataset.delete));showTab()}))}status('Prêt')}catch(e){status('Erreur Firebase: '+e.message)}}
+async function showTab(){if(!authorized)return;if(tab==='reviewPending'){await showReviewPending();return;}document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));$('panelTitle').textContent=({promo:'Affiche verticale',cover:'Couverture',seo:'SEO Manager',articles:'Articles',omra:'Programmes Omra',hotels:'Hôtels',hotelReviews:'Avis publiés',reviewPending:'Avis à modérer',voyages:'Voyages organisés',agencies:'Agences'})[tab];status('Chargement...');let path=tab==='cover'?'banners/home':tab==='promo'?'banners/promo':tab==='seo'?'seo/pages/'+seoKey(seoPage):tab;try{let snap=await get(ref(db,path)),data=snap.val();if(tab==='cover'||tab==='seo'||tab==='promo'){fields(data||{});if(tab==='seo')document.getElementById('seoPage')?.addEventListener('change',e=>{seoPage=e.target.value;showTab()});$('records').innerHTML=tab==='seo'?'<p>Étape 1 : Enregistrer dans Firebase. Étape 2 : Publier SEO pour reconstruire les HTML. Google ne garantit pas le classement.</p>':'<p>Enregistrez vos modifications puis actualisez le site public.</p>'}else{fields();let all=Object.entries(data||{});$('records').innerHTML='<h3>Contenus enregistrés</h3>'+(all.length?all.map(([id,v])=>`<p><strong>${safe(v.title||id)}</strong> · ${v.published?'Publié':'Non publié'} <button type="button" data-edit="${safe(id)}">Modifier</button> <button type="button" data-delete="${safe(id)}">Supprimer</button></p>`).join(''):'<p>Aucun contenu.</p>');$('records').querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.edit;fields(data[selected]);window.scrollTo({top:0,behavior:'smooth'})}));$('records').querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',async()=>{if(!confirm('Supprimer définitivement ?'))return;await remove(ref(db,tab+'/'+btn.dataset.delete));showTab()}))}status('Prêt')}catch(e){status('Erreur Firebase: '+e.message)}}
 $('editor').addEventListener('submit',async e=>{e.preventDefault();if(!authorized)return;let obj={};let form=new FormData(e.target);if(tab==='seo')seoPage=document.getElementById('seoPage')?.value||seoPage;for(let [key] of schemas[tab])obj[key]=String(form.get(key)||'').trim();if(tab!=='cover'&&tab!=='seo'&&tab!=='promo')obj.published=form.get('published')==='on';if(tab==='hotelReviews'){if(!obj.hotelName||!obj.author||!obj.comment){status('Nom hôtel, voyageur et commentaire obligatoires.');return;}if(obj.score && (!Number.isInteger(Number(obj.score))||Number(obj.score)<1||Number(obj.score)>5)){status('Note : entier de 1 à 5.');return;}}obj.createdAt=Date.now();for(let field of ['image','ogImage','link','map','reviews'])if(obj[field]){try{let u=new URL(obj[field]);if(u.protocol!=='https:')throw Error()}catch{status(`URL invalide dans ${field}. HTTPS requis.`);return}}let path=tab==='cover'?'banners/home':tab==='promo'?'banners/promo':tab==='seo'?'seo/pages/'+seoKey(seoPage):tab+'/'+(selected||push(ref(db,tab)).key);try{await set(ref(db,path),obj);selected=null;status('Enregistré dans Firebase.'); await showTab(); status('Enregistré dans Firebase. Pour SEO et articles, utilisez le bouton Publier SEO après configuration de l’API.')}catch(err){status('Erreur enregistrement : '+err.message)}});
 
 // Media upload: only to a trusted, admin-token-verified backend endpoint. Never embed API secrets.
@@ -45,3 +45,52 @@ document.getElementById('publishSeo').addEventListener('click',async()=>{
   st.textContent='Publication demandée. Consultez GitHub Actions pour vérifier le déploiement. Google indexera ensuite selon son calendrier.';
  }catch(e){st.textContent='Publication impossible : '+e.message}
 });
+
+
+// Client reviews: only admins can approve or reject. Public clients never publish directly.
+const pendingSection=document.createElement('div');
+pendingSection.className='admin-panel';
+pendingSection.id='pendingReviewPanel';
+pendingSection.hidden=true;
+document.querySelector('.admin-main')?.appendChild(pendingSection);
+function reviewEscape(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));}
+async function showReviewPending(){
+ document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+ $('panelTitle').textContent='Avis clients en attente';
+ $('editor').closest('.admin-panel').hidden=true;
+ $('records').hidden=true;
+ pendingSection.hidden=false;
+ status('Chargement des avis à modérer...');
+ try{
+  const snap=await get(ref(db,'hotelReviewSubmissions'));
+  const records=[];
+  for(const [hotelId,users] of Object.entries(snap.val()||{})){
+   if(!users||typeof users!=='object')continue;
+   for(const [uid,review] of Object.entries(users)){
+    if(review&&review.status==='pending')records.push({hotelId,uid,...review});
+   }
+  }
+  records.sort((a,b)=>(a.submittedAt||0)-(b.submittedAt||0));
+  pendingSection.innerHTML='<h2>Demandes de publication ('+records.length+')</h2><p class="admin-guide">Vérifier chaque commentaire avant publication. Ne publiez pas de faux avis, de données privées ou de contenu offensant. L’auteur doit avoir consenti à la publication.</p>'+
+   (records.length?records.map((r,i)=>'<div class="pending-review"><strong>'+reviewEscape(r.hotelName)+'</strong> · '+reviewEscape(r.author)+' · '+reviewEscape(r.score)+'/5 <p>'+reviewEscape(r.comment)+'</p><small>Séjour : '+reviewEscape(r.stayDate||'non indiqué')+'</small><div><button type="button" data-approve="'+i+'">Approuver et publier</button><button type="button" data-reject="'+i+'" class="reject">Refuser</button></div></div>').join(''):'<p>Aucun avis en attente.</p>');
+  pendingSection.querySelectorAll('[data-approve]').forEach(b=>b.addEventListener('click',async()=>{
+   const r=records[Number(b.dataset.approve)];
+   if(!r||!confirm('Publier cet avis après vérification ?'))return;
+   b.disabled=true;
+   try{
+    const clean={hotelName:r.hotelName,author:r.author,comment:r.comment,score:Number(r.score)||0,stayDate:r.stayDate||'',published:true,createdAt:Date.now()};
+    const publishedId=push(ref(db,'hotelReviews')).key;
+    await set(ref(db,'hotelReviews/'+publishedId),clean);
+    await remove(ref(db,'hotelReviewSubmissions/'+r.hotelId+'/'+r.uid));
+    status('Avis publié.');await showReviewPending();
+   }catch(e){status('Publication échouée : '+e.message);b.disabled=false;}
+  }));
+  pendingSection.querySelectorAll('[data-reject]').forEach(b=>b.addEventListener('click',async()=>{
+   const r=records[Number(b.dataset.reject)];if(!r||!confirm('Supprimer cette demande ?'))return;
+   b.disabled=true;
+   try{await remove(ref(db,'hotelReviewSubmissions/'+r.hotelId+'/'+r.uid));status('Avis rejeté.');await showReviewPending();}catch(e){status('Suppression échouée : '+e.message);b.disabled=false;}
+  }));
+  status(records.length+' avis en attente.');
+ }catch(e){pendingSection.innerHTML='<p>Impossible de charger les demandes. Vérifiez les règles Firebase : '+reviewEscape(e.code||e.message)+'</p>';status('Erreur de lecture des avis.');}
+}
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{const p=b.dataset.tab==='reviewPending';$('editor').closest('.admin-panel').hidden=p;$('records').hidden=p;pendingSection.hidden=!p;}));
