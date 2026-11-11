@@ -5,7 +5,7 @@ from google.oauth2 import service_account
 from google.auth.transport.requests import Request
 ROOT=Path(__file__).resolve().parent
 DB='https://walidvoyages-13332-default-rtdb.firebaseio.com'
-BASE=os.getenv('PUBLIC_SITE_URL','https://walidvoyages.github.io/walidvoyagessite').rstrip('/')
+BASE=os.getenv('PUBLIC_SITE_URL','https://www.walidvoyages.com').rstrip('/')
 assert BASE.startswith('https://')
 creds_json=os.getenv('FIREBASE_SERVICE_ACCOUNT_JSON')
 if not creds_json:
@@ -17,7 +17,7 @@ def get(path):
  with urllib.request.urlopen(request,timeout=25) as response:
   return json.load(response)
 def escaped(v):return html.escape(str(v or ''),quote=True)
-def canonical(file):return BASE+'/'+file
+def canonical(file):return BASE+'/' if file=='index.html' else BASE+'/'+file
 def update_meta(content,name,value):
  pattern=r'<meta\s+name=["\']'+re.escape(name)+r'["\'][^>]*>'
  tag='<meta name="'+name+'" content="'+escaped(value)+'">'
