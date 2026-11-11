@@ -1,0 +1,11 @@
+name = "walid-hotels-chat"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[[ratelimits]]
+name = "CHAT_RATE_LIMITER"
+namespace_id = "482691"
+
+  [ratelimits.simple]
+  limit = 8
+  period = 60
