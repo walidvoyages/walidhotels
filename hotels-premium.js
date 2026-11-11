@@ -62,7 +62,7 @@ if(!grid)return;
 var city=document.getElementById("city")?.value||"all";
 var term=document.getElementById("hotelQuery")?.value.trim().toLocaleLowerCase()||"";
 var results=allHotels().filter(function(h){return (selected==="all"||h.c===selected)&&(city==="all"||h.c===city)&&(!term||h.n.toLocaleLowerCase().includes(term)||h.c.toLocaleLowerCase().includes(term));});
-var shown=expanded?results:results.slice(0,6);
+var shown=expanded?results:results.slice(0,6);window.walidHotelsData=allHotels().map(h=>({name:h.n,city:h.c,stars:h.s}));
 grid.innerHTML=shown.length?shown.map(hotelHtml).join(""):'<div class="empty-results">'+(ar?"ما لقيناش نزل حسب الفلاتر. جرّب مدينة أخرى.":"Aucun hôtel ne correspond à ces filtres. Essayez une autre destination.")+'</div>';
 if(more){more.hidden=results.length<=6;more.textContent=expanded?(ar?"عرض أقل ↑":"Voir moins ↑"):(ar?"عرض مزيد من النزل ↓":"Voir plus d’hôtels ↓");}
 var count=document.getElementById("hotelCount");if(count)count.textContent=results.length+" "+(ar?"نزل في الكتالوج":"hôtels à découvrir");
