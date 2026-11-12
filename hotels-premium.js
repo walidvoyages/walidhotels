@@ -45,7 +45,7 @@ function verifiedOfficialHotelLink(h){
  if(raw){
   try{
    var url=new URL(raw);
-   if(url.protocol==="https:"&&["www.walid-voyages.com","walid-voyages.com"].includes(url.hostname)&&/^\\/details\\/\\d+\\/?$/.test(url.pathname))return url.href;
+   if(url.protocol==="https:"&&["www.walid-voyages.com","walid-voyages.com"].includes(url.hostname)&&new RegExp("^/details/[0-9]+/?$").test(url.pathname))return url.href;
   }catch(e){}
  }
  // The only confirmed static mapping; other hotels need their actual ID in Admin.
