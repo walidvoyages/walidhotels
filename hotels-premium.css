@@ -36,3 +36,24 @@
 .hotel-feedback .write-review:hover{background:#198fc8}.hotel-feedback .hotel-review{margin-top:9px}
 .hotel-feedback .hotel-review summary{cursor:pointer;color:#166b95;font-size:13px}
 .hotel-google-link{margin:10px 0 0;font-size:13px}.hotel-google-link a{color:#137da9;text-decoration:underline;text-underline-offset:2px}
+
+/* Dynamic homepage destination explorer — branded, responsive, accessible. */
+.hero-explorer{min-width:0;position:relative;border-radius:26px;overflow:hidden;background:#10374d;box-shadow:0 26px 60px rgba(15,53,72,.19);color:#fff}
+.hero-city-photo{height:320px;position:relative;background:linear-gradient(135deg,#49AAE3,#155d83)}
+.hero-city-photo img{width:100%;height:100%;object-fit:cover}
+.hero-city-photo:after{content:'';position:absolute;inset:38% 0 0;background:linear-gradient(transparent,rgba(9,38,55,.7));pointer-events:none}
+.photo-disclaimer{position:absolute;top:15px;inset-inline-end:16px;z-index:1;border-radius:30px;padding:5px 12px;background:#103e55bb;font-size:11px}
+.hero-city-panel{padding:23px 25px 10px}
+.hero-city-topline{display:flex;align-items:center;justify-content:space-between;color:#B5D33F;font-size:10px;font-weight:800;letter-spacing:.13em}
+.hero-city-panel h2{font:800 clamp(29px,3.3vw,48px)/1.15 Manrope,Tajawal,sans-serif;margin:9px 0 2px;color:#fff}
+.hero-city-locality{color:#d2e5ef;font-size:14px;margin:0 0 10px}
+.hero-city-count{font-size:13px;margin:0 0 14px;color:#d8e8f0}
+.hero-city-explore{display:inline-flex;background:#B5D33F;color:#18363d;padding:10px 19px;border-radius:20px;font-size:13px;font-weight:800}
+.hero-city-explore:hover{background:#c9e45b}
+.hero-city-controls{display:flex;gap:7px;align-items:center;padding:18px 14px 20px}
+.hero-city-controls>button{flex:0 0 35px;width:35px;height:35px;border:1px solid #ffffff66;border-radius:50%;background:#ffffff10;color:#fff;font-size:23px}
+.hero-city-pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;min-width:0;scroll-behavior:smooth}
+.hero-city-pills button{flex:0 0 auto;border:1px solid #ffffff46;background:transparent;color:#fff;border-radius:20px;padding:8px 11px;font-size:12px;font-weight:700}
+.hero-city-pills button.is-active,.hero-city-pills button:hover{background:#49AAE3;border-color:#49AAE3}
+@media(max-width:900px){.hero-explorer{max-width:700px;margin:auto}.hero-city-photo{height:250px}}
+@media(max-width:540px){.hero-city-panel{padding:18px 18px 8px}.hero-city-photo{height:225px}.hero-city-controls{padding-inline:8px}.hero-city-pills button{font-size:11px;padding:8px 10px}}
