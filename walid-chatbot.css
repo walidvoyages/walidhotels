@@ -3,3 +3,12 @@
 [dir=rtl] .chat-fab{right:auto;left:21px}[dir=rtl] .chat-panel{right:auto;left:15px}[dir=rtl] .chat-tools small{margin-left:0;margin-right:auto}[dir=rtl] .chat-bubble{border-radius:15px 15px 4px 15px}[dir=rtl] .chat-bubble.user{border-radius:15px 15px 15px 4px}[dir=rtl] .chat-bubble{align-self:flex-start}[dir=rtl] .chat-bubble.user{align-self:flex-end}
 @media(max-width:550px){.chat-fab{bottom:84px;right:12px;padding:10px 13px}.chat-fab-caption{display:none}.chat-panel{bottom:143px;right:10px;height:calc(100dvh - 158px);max-height:590px;width:calc(100vw - 20px)}[dir=rtl] .chat-fab{left:12px}[dir=rtl] .chat-panel{left:10px}}
 @media(prefers-reduced-motion:reduce){.chat-fab{transition:none!important}}
+
+/* Booking assistant: curated matching hotel results */
+.chat-hotel-results{align-self:stretch;display:grid;grid-template-columns:1fr;gap:8px;width:100%}
+.chat-hotel-result{display:flex;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid #d6e7ee;border-radius:14px;background:#fff;padding:11px 12px;box-shadow:0 5px 14px #0f355009}
+.chat-hotel-result strong{font-size:13px;color:#163b54;overflow-wrap:anywhere}
+.chat-hotel-result small{font-size:11px;color:#6c8798}
+.chat-hotel-result a{display:inline-flex;color:#fff;background:#188fc4;border-radius:8px;font-size:11px;font-weight:800;padding:8px 10px;margin-top:3px;text-decoration:none}
+.chat-hotel-result a:focus-visible,.chat-fab:focus-visible{outline:3px solid #B5D33F;outline-offset:2px}
+.chat-bubble a:hover,.chat-hotel-result a:hover{background:#0f6d9e}
