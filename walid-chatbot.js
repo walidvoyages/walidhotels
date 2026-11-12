@@ -26,7 +26,7 @@ const CITY_ALIASES={
 "Monastir":["monastir","mestir","mounastir","المنستير","منستير"],
 "Tabarka":["tabarka","طبرقة","طبرقه"],
 "Gammarth":["gammarth","gamarth","قمرت"],
-"Tunis":["tunis","tounes","tunisie","تونس","العاصمة"],
+"Tunis":["tunis","tounes","تونس","العاصمة"],
 };
 const cityOf=q=>{let n=normalize(q);return Object.entries(CITY_ALIASES).find(([,v])=>v.some(w=>n.includes(normalize(w))))?.[0]||"";};
 const catalog=()=>Array.isArray(window.walidHotelsData)?window.walidHotelsData.filter(h=>h&&h.name&&h.city):[];
