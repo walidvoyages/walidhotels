@@ -39,7 +39,6 @@ function cover(u,idx){return safeUrl(u)||img(idx);}
 function isPublished(v){return !!v && (v.published===true||v.published==="true");}
 function official(){return BOOK;}
 // Only link directly to confirmed hotel details from the original booking website.
-var knownOfficialDetails={"tuimag iclifeafricana":"/details/166"};
 function verifiedOfficialHotelLink(h){
  var raw=String(h.u||"");
  // Official records managed in Admin take priority, but reject unrelated or listing URLs.
@@ -50,7 +49,7 @@ function verifiedOfficialHotelLink(h){
   }catch(e){}
  }
  // The only confirmed static mapping; other hotels need their actual ID in Admin.
- if(key(h.n)==="tuimag iclifeafricana".replace(/[^a-z0-9]/g,""))return "https://www.walid-voyages.com/details/166";
+ if(key(h.n)==="tuimagiclifeafricana")return "https://www.walid-voyages.com/details/166";
  return "";
 }
 function googleMapsLink(h){
@@ -93,7 +92,7 @@ var st=Number(h.s);var valid=Number.isInteger(st)&&st>=1&&st<=5;var rating=valid
 var c=esc(h.c);var n=esc(h.n);var link=verifiedOfficialHotelLink(h);var maps=googleMapsLink(h);
 var faqEntries=[[(ar?"أوقات الدخول والخروج":"Horaires de check-in/check-out"),h.faqCheckin],[(ar?"الخدمات والتجهيزات":"Services et équipements"),h.faqServices],[(ar?"سياسة الإلغاء":"Conditions d’annulation"),h.faqCancellation]].filter(function(q){return typeof q[1]==="string"&&q[1].trim();});
 var faqMarkup=faqEntries.length?'<details class="hotel-review hotel-faq"><summary>'+(ar?"أسئلة على النزل":"Questions sur cet hôtel")+' ('+faqEntries.length+')</summary>'+faqEntries.map(function(q){return '<p><strong>'+esc(q[0])+'</strong><span style="display:block">'+esc(q[1])+'</span></p>';}).join("")+'</details>':"";
-return '<article class="hotel-card"><div class="hotel-media"><img src="'+esc(cover(h.p,i))+'" loading="lazy" alt="'+(ar?"صورة توضيحية لوجهة ":"Photo d’ambiance, destination ")+c+'" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80\'"><span class="hotel-pill">'+(h.v?(ar?"موجود على موقع وليد للأسفار":"Référencé chez Walid Voyages"):(ar?"اقتراح اكتشاف":"À découvrir"))+'</span><small class="hotel-illustration">'+(ar?"صورة توضيحية":"Photo d’ambiance")+'</small></div><div class="hotel-body"><div class="hotel-location">⌖ '+c+', '+(ar?"تونس":"Tunisie")+'</div><h3>'+n+'</h3><div>'+rating+'</div><p class="hotel-desc">'+esc(ar?h.a:h.f)+'</p><div class="hotel-divider"></div><div class="hotel-bottom"><div><small>'+(ar?"الأسعار حسب التاريخ والتوفّر":"Tarifs selon dates et disponibilité")+'</small><strong>'+(ar?"التثبت في السعر":"Prix à consulter")+'</strong></div>'+(link?'<a href="'+esc(link)+'" rel="noopener noreferrer" target="_blank">'+(ar?"امشي لصفحة النزل الأصلية ↗":"Voir la fiche officielle ↗")+'</a>':'<a href="'+esc(enquiry(h.n))+'" rel="noopener noreferrer" target="_blank">'+(ar?"اطلب رابط الحجز ↗":"Demander la fiche de réservation ↗")+'</a>')+'</div><p class="hotel-google-link"><a href="'+esc(maps)+'" target="_blank" rel="noopener noreferrer">'+(ar?"شوف النزل على Google Maps ↗":"Voir cet hôtel sur Google Maps ↗")+'</a></p>'+faqMarkup+reviewHtml(h)+'</div></article>';
+return '<article class="hotel-card"><div class="hotel-media">'+(link?'<a class="hotel-official-photo" href="'+esc(link)+'" target="_blank" rel="noopener noreferrer" aria-label="'+(ar?"الصفحة الأصلية للنزل ":"Fiche officielle de ")+n+'">':'')+'<img src="'+esc(cover(h.p,i))+'" loading="lazy" alt="'+(ar?"صورة توضيحية لوجهة ":"Photo d’ambiance, destination ")+c+'" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80\'">'+(link?'</a>':'')+'<span class="hotel-pill">'+(h.v?(ar?"موجود على موقع وليد للأسفار":"Référencé chez Walid Voyages"):(ar?"اقتراح اكتشاف":"À découvrir"))+'</span><small class="hotel-illustration">'+(ar?"صورة توضيحية":"Photo d’ambiance")+'</small></div><div class="hotel-body"><div class="hotel-location">⌖ '+c+', '+(ar?"تونس":"Tunisie")+'</div><h3>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">'+n+'</a>':n)+'</h3><div>'+rating+'</div><p class="hotel-desc">'+esc(ar?h.a:h.f)+'</p><div class="hotel-divider"></div><div class="hotel-bottom"><div><small>'+(ar?"الأسعار حسب التاريخ والتوفّر":"Tarifs selon dates et disponibilité")+'</small><strong>'+(ar?"التثبت في السعر":"Prix à consulter")+'</strong></div>'+(link?'<a href="'+esc(link)+'" rel="noopener noreferrer" target="_blank">'+(ar?"امشي لصفحة النزل الأصلية ↗":"Voir la fiche officielle ↗")+'</a>':'<a href="'+esc(enquiry(h.n))+'" rel="noopener noreferrer" target="_blank">'+(ar?"اطلب رابط الحجز ↗":"Demander la fiche de réservation ↗")+'</a>')+'</div><p class="hotel-google-link"><a href="'+esc(maps)+'" target="_blank" rel="noopener noreferrer">'+(ar?"شوف النزل على Google Maps ↗":"Voir cet hôtel sur Google Maps ↗")+'</a></p>'+faqMarkup+reviewHtml(h)+'</div></article>';
 }
 function render(){
 if(!grid)return;
