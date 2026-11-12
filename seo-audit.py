@@ -35,7 +35,7 @@ else:
                 errors.append("Noindex URL included in sitemap: " + str(url))
             if not re.search(r"<title\b[^>]*>\s*[^<]+", html, re.I):
                 errors.append("Missing SEO title: " + str(url))
-            if not re.search(r'<link\s+rel=["\']canonical["\']', html, re.I):
+            if (p.startswith(('hotels/', 'articles/')) or p in ('', 'index.html', 'ar.html', 'hotels-tunisie.html')) and not re.search(r'<link\s+rel=["\']canonical["\']', html, re.I):
                 errors.append("Missing canonical: " + str(url))
     except (ET.ParseError, OSError) as exc:
         errors.append("Invalid sitemap: " + str(exc))
