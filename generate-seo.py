@@ -54,7 +54,13 @@ for fr,ar in [('index.html','ar.html'),('omra-tunisie.html','ar-omra-tunisie.htm
 articles=get('articles') or {}
 if not isinstance(articles,dict):raise RuntimeError('Firebase articles format incorrect')
 out=ROOT/'articles';out.mkdir(exist_ok=True)
-urls=[canonical(f) for f in filenames if (ROOT/f).exists()]
+# Build the sitemap from all public HTML pages, not only editorial files.
+urls=[]
+for page in sorted(ROOT.glob('*.html')):
+ if page.name=='admin.html':continue
+ source=page.read_text(encoding='utf-8')
+ if 'noindex' in source.lower().split('</head>')[0]:continue
+ urls.append(canonical(page.name))
 for key,record in articles.items():
  if not isinstance(record,dict) or record.get('published') is not True:continue
  slug=re.sub(r'[^a-z0-9-]','-',str(record.get('slug') or key).lower()).strip('-')[:70] or 'article'
@@ -73,14 +79,24 @@ published_hotels=[]
 for record in hotels_data.values():
  if not isinstance(record,dict) or record.get('published') is not True or not record.get('title'):continue
  published_hotels.append(record)
+hotel_links=[]
+used_slugs=set()
 for record in published_hotels:
  title=str(record['title'])[:110]
  city=str(record.get('city') or 'Tunisie')[:75]
  slug=re.sub(r'[^a-z0-9]+','-',__import__('unicodedata').normalize('NFKD',title).encode('ascii','ignore').decode().lower()).strip('-')[:72]
  if not slug:continue
+ if slug in used_slugs:
+  print('Skipping duplicate hotel slug:',slug)
+  continue
+ used_slugs.add(slug)
  filename=slug+'.html'
  url=BASE+'/hotels/'+filename
- description=(str(record.get('description') or 'Découvrez cet hôtel et demandez une offre de séjour avec Walid Voyages.')[:280])
+ description=str(record.get('description') or '').strip()[:280]
+ # Avoid automatically indexing boilerplate pages with no useful hotel information.
+ if len(description)<70:
+  print('Skipping hotel with insufficient description:',title)
+  continue
  page_title=escaped(title+' à '+city+' | Séjour en Tunisie - Walid Hotels')
  image=str(record.get('image') or '')
  if not image.startswith('https://'):image=''
@@ -96,10 +112,24 @@ for record in published_hotels:
  faq_items=[(q,str(a).strip()[:450]) for q,a in faq_items if isinstance(a,str) and a.strip()]
  faq_html='<section aria-label="Questions sur cet hôtel"><h2>Questions fréquentes sur '+escaped(title)+'</h2>'+''.join('<details><summary>'+escaped(q)+'</summary><p>'+escaped(a)+'</p></details>' for q,a in faq_items)+'</section>' if faq_items else ''
  breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Walid Hotels","item":BASE+"/"},{"@type":"ListItem","position":2,"name":title,"item":url}]}
- booking_search="https://www.walid-voyages.com/liste?"+urllib.parse.urlencode({"hotel":title,"q":title,"destination":city})
- doc='''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>'''+page_title+'''</title><meta name="description" content="'''+escaped(description[:155])+'''"><link rel="canonical" href="'''+escaped(url)+'''"><style>body{margin:0;font:17px/1.8 system-ui,sans-serif;background:#f3f9fb;color:#183c52}header,main,footer{max-width:920px;margin:auto;padding:25px}a{color:#198aba}h1{font-size:clamp(30px,5vw,53px);line-height:1.2}main{background:#fff;border-radius:20px;box-shadow:0 14px 44px #1232}img{border-radius:18px;max-height:380px;width:100%;object-fit:cover}.cta{display:inline-block;padding:12px 20px;border-radius:30px;background:#49AAE3;color:white;font-weight:bold}</style><script type="application/ld+json">'''+json.dumps(ld,ensure_ascii=False).replace('</','<\\/')+'''</script><script type="application/ld+json">'''+json.dumps(breadcrumb,ensure_ascii=False).replace('</','<\\/')+'''</script></head><body><header><a href="'''+escaped(BASE+'/')+'''">Walid Hotels · Walid Voyages</a></header><main><h1>'''+escaped(title)+'''</h1><p>Hôtel à '''+escaped(city)+''', Tunisie</p>'''+('<img src="'+escaped(image)+'" loading="lazy" alt="'+escaped(title)+'">' if image else '')+'''<p>'''+escaped(description)+'''</p>'''+faq_html+'''<p>Tarifs, caractéristiques et disponibilité à confirmer pour les dates du séjour.</p><a class="cta" href="'''+escaped(booking_search)+'''">Vérifier les tarifs sur le site de réservation officiel</a></main><footer>Walid Voyages • '''+escaped(city)+'''</footer></body></html>'''
+ official_raw=str(record.get('link') or '').strip()
+ official_url=official_raw if re.fullmatch(r'https://(?:www[.])?walid-voyages[.]com/details/[0-9]+/?',official_raw) else ''
+ booking_search=official_url or 'https://wa.me/21658150699?'+urllib.parse.urlencode({'text':'Bonjour, je souhaite réserver '+title+' à '+city+'. Merci de me communiquer sa fiche officielle.'})
+ booking_label='Voir la fiche officielle sur Walid Voyages' if official_url else 'Demander le lien officiel à Walid Voyages'
+ doc='''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>'''+page_title+'''</title><meta name="description" content="'''+escaped(description[:155])+'''"><link rel="canonical" href="'''+escaped(url)+'''"><style>body{margin:0;font:17px/1.8 system-ui,sans-serif;background:#f3f9fb;color:#183c52}header,main,footer{max-width:920px;margin:auto;padding:25px}a{color:#198aba}h1{font-size:clamp(30px,5vw,53px);line-height:1.2}main{background:#fff;border-radius:20px;box-shadow:0 14px 44px #1232}img{border-radius:18px;max-height:380px;width:100%;object-fit:cover}.cta{display:inline-block;padding:12px 20px;border-radius:30px;background:#49AAE3;color:white;font-weight:bold}</style><script type="application/ld+json">'''+json.dumps(ld,ensure_ascii=False).replace('</','<\\/')+'''</script><script type="application/ld+json">'''+json.dumps(breadcrumb,ensure_ascii=False).replace('</','<\\/')+'''</script></head><body><header><a href="'''+escaped(BASE+'/')+'''">Walid Hotels · Walid Voyages</a></header><main><h1>'''+escaped(title)+'''</h1><p>Hôtel à '''+escaped(city)+''', Tunisie</p>'''+('<img src="'+escaped(image)+'" loading="lazy" alt="'+escaped(title)+'">' if image else '')+'''<p>'''+escaped(description)+'''</p>'''+faq_html+'''<p>Tarifs, caractéristiques et disponibilité à confirmer pour les dates du séjour.</p><a class="cta" href="'''+escaped(booking_search)+'''">'''+escaped(booking_label)+'''</a></main><footer>Walid Voyages • '''+escaped(city)+'''</footer></body></html>'''
  (hotels_dir/filename).write_text(doc,encoding='utf-8')
  urls.append(url)
+ hotel_links.append((title,city,url))
+
+# Add normal HTML links to hotel pages so crawlers can discover them.
+listing_page=ROOT/'hotels-tunisie.html'
+if listing_page.exists():
+ content=listing_page.read_text(encoding='utf-8')
+ content=re.sub(r'<!-- SEO_HOTEL_LINKS_START -->.*?<!-- SEO_HOTEL_LINKS_END -->','',content,flags=re.S)
+ links=''.join('<li><a href="'+escaped(url)+'">'+escaped(title)+'</a> — '+escaped(city)+'</li>' for title,city,url in sorted(hotel_links,key=lambda v:(v[1].lower(),v[0].lower())))
+ block='<!-- SEO_HOTEL_LINKS_START --><section class="article-block" aria-label="Hôtels référencés"><h2>Découvrir nos hôtels en Tunisie</h2><p>Consultez nos fiches. Services, tarifs et disponibilités sont à confirmer lors de la réservation.</p><ul>'+links+'</ul></section><!-- SEO_HOTEL_LINKS_END -->' if hotel_links else ''
+ content=content.replace('</main>',block+'</main>',1)
+ listing_page.write_text(content,encoding='utf-8')
 
 xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('<url><loc>'+escaped(u)+'</loc></url>\n' for u in sorted(set(urls)))+'</urlset>\n'
 (ROOT/'sitemap.xml').write_text(xml,encoding='utf-8')
