@@ -38,7 +38,7 @@ function safeUrl(url){try{var u=new URL(url,location.href);return u.protocol==="
 function cover(u,idx){return safeUrl(u)||img(idx);}
 function isPublished(v){return !!v && (v.published===true||v.published==="true");}
 function official(){return BOOK;}
-function bookingLink(h){let u=new URL(BOOK);let ci=document.getElementById("arrival")?.value,co=document.getElementById("departure")?.value; if(ci)u.searchParams.set("checkin",ci);if(co)u.searchParams.set("checkout",co);u.searchParams.set("hotel",h.n);u.searchParams.set("q",h.n);u.searchParams.set("destination",h.c);return u.href;}
+function bookingLink(h){return BOOK;} // Open principal booking engine; provider-specific deep links require documented support.
 function rotate(items){if(items.length<2)return items;let day=Math.floor(Date.now()/86400000);let offset=day%items.length;return items.slice(offset).concat(items.slice(0,offset));}
 function enquiry(name){var from=document.getElementById("arrival"),to=document.getElementById("departure"),guests=document.getElementById("guests");
 var txt=(ar?"السلام عليكم، نحب نستفسر على حجز نزل ":"Bonjour, je souhaite une offre pour l’hôtel ")+name+".\n"+
