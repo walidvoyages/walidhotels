@@ -16,4 +16,6 @@
  <url><loc>https://www.walidvoyages.com/ar-vols-tunisie.html</loc></url>
  <url><loc>https://www.walidvoyages.com/ar-hotels-tunisie.html</loc></url>
  <url><loc>https://www.walidvoyages.com/ar-voyages-tunisie.html</loc></url>
+ <url><loc>https://www.walidvoyages.com/agence-de-voyages-tunisie.html</loc><xhtml:link rel="alternate" hreflang="ar-TN" href="https://www.walidvoyages.com/ar-agence-de-voyages-tunisie.html"/></url>
+ <url><loc>https://www.walidvoyages.com/ar-agence-de-voyages-tunisie.html</loc><xhtml:link rel="alternate" hreflang="fr-TN" href="https://www.walidvoyages.com/agence-de-voyages-tunisie.html"/></url>
 </urlset>
