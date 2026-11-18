@@ -44,10 +44,15 @@ Les cartes conservent le lien Maps original lorsqu’il est disponible, avec un 
 
 
 ## V5 — liens officiels et SEO bilingue
-- Vols : https://www.walid-voyages.com/vols
+- Vols : https://walid.amadeusonlinesuite.com/flights
 - Hôtels : https://www.walid-voyages.com/liste
 - Pages françaises et pages arabes SEO statiques, avec liens croisés et sitemap.
 - Le formulaire de recherche ouvre le moteur officiel, mais **ne transfère pas automatiquement les critères** : cela nécessite un deep link/API pris en charge par le prestataire de réservation.
 - Firebase et Cloudinary : mêmes paramètres que V4. Les images sont stockées sur Cloudinary; le site conserve les liens dans Firebase. Un upload directement depuis l'ordinateur via preset Signed nécessite un backend sécurisé.
 - Les modifications SEO enregistrées dans Firebase ne changent pas automatiquement les meta tags HTML; republier des pages statiques pour appliquer ces changements à Google.
 - Évitez le travail via file:// : utilisez un serveur HTTP local ou GitHub Pages.
+
+## Accès aux vols — mise à jour 18 novembre 2026
+- Les pages de vols FR/AR et les boutons de réservation renvoient vers `https://walid.amadeusonlinesuite.com/flights`.
+- Le moteur de réservation est hébergé sur Amadeus Online Suite (ouvert dans un nouvel onglet) : aucune API ni iframe n'est intégrée au site statique.
+- Les critères saisis sur les éventuels formulaires internes ne sont pas transférés automatiquement au moteur de vols, faute de deep link/API documentés.
