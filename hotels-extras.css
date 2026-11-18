@@ -26,3 +26,12 @@
 [dir=rtl] .flight-cta-inner{text-align:right}
 @media(max-width:800px){.flight-cta-inner{flex-wrap:wrap;padding:24px}.flight-cta-actions{flex:1 1 100%;flex-direction:row}.flight-cta-actions a{flex:1}}
 @media(max-width:520px){.flight-cta-inner{gap:15px;padding:20px}.flight-cta-mark{width:48px;height:48px;flex-basis:48px;font-size:26px}.flight-cta-copy{flex-basis:calc(100% - 65px)}.flight-cta-copy h2{font-size:21px}.flight-cta-actions{flex-direction:column}}
+
+/* Official hotel booking CTA — Walid Voyages */
+.official-hotel-booking{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:16px 3px 0;padding:17px 21px;border-radius:16px;background:linear-gradient(115deg,#eaf8fd,#f5fbe5);border:1px solid #d8ebd0}
+.official-hotel-booking>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.official-hotel-booking strong{color:#163A64;font-size:16px}
+.official-hotel-booking span{color:#496779;font-size:13px;line-height:1.55}
+.official-hotel-button{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;padding:13px 19px;border-radius:12px;background:#49AAE3;color:white;font-weight:800;text-align:center;font-size:13px;text-decoration:none}
+.official-hotel-button:hover{background:#168ecb}
+@media(max-width:740px){.official-hotel-booking{flex-direction:column;align-items:stretch;padding:16px}.official-hotel-button{width:100%}}
